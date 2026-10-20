@@ -51,13 +51,31 @@ export default async function handler(request, response) {
   }
 
   if (!upstream.ok) {
-    const statusCode = upstream.status === 403 || upstream.status === 429 ? 429 : 502
+    const rateLimitRemaining = upstream.headers.get("x-ratelimit-remaining")
+    const rateLimited =
+      upstream.status === 429 ||
+      (upstream.status === 403 && rateLimitRemaining === "0")
+    const statusCode = rateLimited ? 429 : 502
+
+    console.error("GitHub release list request was rejected:", {
+      status: upstream.status,
+      requestId: upstream.headers.get("x-github-request-id"),
+      rateLimitRemaining,
+      rateLimitReset: upstream.headers.get("x-ratelimit-reset"),
+    })
+
     sendError(
       response,
       statusCode,
-      statusCode === 429
-        ? "Release requests are temporarily limited. Try again shortly."
-        : "The release service could not provide release information.",
+      rateLimited
+        ? "GitHub's release API rate limit has been reached. Try again after it resets."
+        : upstream.status === 401
+          ? "GitHub rejected the release token. Check that GITHUB_TOKEN is active and configured for this deployment."
+          : upstream.status === 403
+            ? "GitHub denied access to the private Zorora releases. Check the token's repository access and Contents: read permission."
+            : upstream.status === 404
+              ? "GitHub could not find the private Zorora release source. Check that the configured token can access acunetix2/Zorora."
+              : "The release service could not provide release information.",
     )
     return
   }
