@@ -22,23 +22,23 @@ export function AboutPage({ onNavigate }: { onNavigate: (path: string) => void }
   return (
     <section className="content-page">
       <Badge variant="outline" className="eyebrow"><Heart size={13} /> About Zorora</Badge>
-      <h1>Care that travels<br /><span>with your family.</span></h1>
+      <h1>Daycare and care,<br /><span>connected with family.</span></h1>
       <p className="page-lede">
-        Zorora brings guardians, transport providers, and care services together
-        to help make dependent journeys safer and easier to coordinate.
+        Zorora helps guardians find care providers, manage bookings, and stay
+        connected with the people caring for their dependents.
       </p>
       <div className="about-grid">
         <Card className="glass-card about-story">
           <CardHeader>
             <div className="page-icon"><MapPinned /></div>
-            <CardTitle>Confidence from pickup to arrival.</CardTitle>
-            <CardDescription>Journeys with care built in.</CardDescription>
+            <CardTitle>Care providers in one place.</CardTitle>
+            <CardDescription>Discover daycare and manage care bookings.</CardDescription>
           </CardHeader>
           <CardContent>
             <p>
-              Arrange transport, keep up with journey progress, and coordinate
-              trusted handovers in one place. Zorora is designed to help the
-              people caring for a dependent stay informed and connected.
+              Browse daycare and care providers, manage bookings, and coordinate
+              the people supporting a dependent. Transport, live tracking, and
+              trusted handovers help keep care connected when someone needs to travel.
             </p>
             <p>
               This portal is the official place to find Zorora mobile releases,
@@ -55,7 +55,7 @@ export function AboutPage({ onNavigate }: { onNavigate: (path: string) => void }
             <CardHeader>
               <div className="page-icon"><ShieldCheck /></div>
               <CardTitle>Safety at every handover</CardTitle>
-              <CardDescription>Keep authorized receivers and journey details close.</CardDescription>
+              <CardDescription>Keep authorized receivers and care details close.</CardDescription>
             </CardHeader>
           </Card>
           <Card className="glass-card value-card">
@@ -71,8 +71,8 @@ export function AboutPage({ onNavigate }: { onNavigate: (path: string) => void }
                 <MessageAvatar><img src="/zorora-logo.svg" alt="Zorora" /></MessageAvatar>
                 <MessageContent>
                   <MessageHeader>Zorora</MessageHeader>
-                  <div className="message-bubble">Every journey deserves care, clarity, and a trusted handover.</div>
-                  <MessageFooter>From pickup to arrival</MessageFooter>
+                  <div className="message-bubble">Find care, manage bookings, and keep your support network connected.</div>
+                  <MessageFooter>Care coordination for dependents</MessageFooter>
                 </MessageContent>
               </Message>
             </MessageGroup>

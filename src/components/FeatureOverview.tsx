@@ -1,13 +1,18 @@
+import { useEffect, useRef } from "react"
 import {
+  CalendarCheck,
   CarFront,
-  CreditCard,
+  ChevronLeft,
+  ChevronRight,
   HeartHandshake,
   MapPinned,
+  Search,
   ShieldCheck,
   UsersRound,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
@@ -17,43 +22,49 @@ import {
 
 const features = [
   {
-    icon: CarFront,
-    title: "Book trusted journeys",
-    description: "Arrange transport for the people who depend on you, with clear journey details.",
+    icon: Search,
+    splash: "daycare-classroom.jpg",
+    title: "Discover trusted daycare",
+    description: "Browse daycare and care providers near you, with service details in one place.",
   },
   {
-    icon: MapPinned,
-    title: "Follow journeys live",
-    description: "Stay up to date with location and journey progress from pickup to arrival.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Coordinate safe handovers",
-    description: "Manage authorized receivers and make each custody transfer easier to verify.",
+    icon: CalendarCheck,
+    splash: "daycare-care.jpg",
+    title: "Manage care bookings",
+    description: "Request and manage daycare and care services for your dependents.",
   },
   {
     icon: HeartHandshake,
-    title: "Find care near you",
-    description: "Explore transport, daycare, school, and other trusted care services.",
+    splash: "daycare-playground.jpg",
+    title: "Keep care organized",
+    description: "Coordinate bookings, availability, and important care information.",
+  },
+  {
+    icon: ShieldCheck,
+    splash: "daycare-care.jpg",
+    title: "Coordinate safe handovers",
+    description: "Connect care bookings with authorized pickup and drop-off arrangements.",
   },
   {
     icon: UsersRound,
-    title: "Keep everyone connected",
-    description: "Bring guardians, providers, and drivers together around the same journey.",
+    splash: "daycare-classroom.jpg",
+    title: "Connect guardians and providers",
+    description: "Keep the people supporting a dependent informed and working together.",
   },
   {
-    icon: CreditCard,
-    title: "Manage journey payments",
-    description: "Review payment options and keep journey-related transactions in one place.",
+    icon: CarFront,
+    splash: "daycare-playground.jpg",
+    title: "Coordinate supporting transport",
+    description: "Track trips between home, school, and care when a dependent needs a ride.",
   },
 ]
 
 const screenshots = [
   {
-    image: "services.jpeg",
-    alt: "Zorora services for rides, daycare, family, schools, and care",
-    title: "Services for every journey",
-    detail: "Find rides and care in one place.",
+    image: "daycarebookings.jpeg",
+    alt: "Zorora daycare bookings and booking status",
+    title: "Daycare bookings",
+    detail: "Keep care requests organized.",
   },
   {
     image: "activity.jpeg",
@@ -62,10 +73,10 @@ const screenshots = [
     detail: "Follow requests and journey updates.",
   },
   {
-    image: "daycarebookings.jpeg",
-    alt: "Zorora daycare bookings and booking status",
-    title: "Care bookings",
-    detail: "Keep daycare requests organized.",
+    image: "services.jpeg",
+    alt: "Zorora services for daycare, family, schools, and transport",
+    title: "Care and support services",
+    detail: "Find care alongside related services.",
   },
   {
     image: "login.jpeg",
@@ -100,6 +111,60 @@ const screenshots = [
 ]
 
 export function FeatureOverview() {
+  const screenshotTrackRef = useRef<HTMLDivElement>(null)
+  const screenshotPausedRef = useRef(false)
+
+  useEffect(() => {
+    const track = screenshotTrackRef.current
+
+    if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return
+    }
+
+    const duplicate = track.querySelector<HTMLElement>("[data-gallery-copy='duplicate']")
+
+    if (!duplicate) {
+      return
+    }
+
+    let animationFrame = 0
+    let previousTime = 0
+    const loopWidth = duplicate.getBoundingClientRect().left - track.getBoundingClientRect().left
+
+    const animate = (time: number) => {
+      if (previousTime && !screenshotPausedRef.current) {
+        const elapsed = Math.min(time - previousTime, 50)
+        const nextPosition = track.scrollLeft + elapsed * 0.02
+        track.scrollLeft = nextPosition >= loopWidth ? nextPosition - loopWidth : nextPosition
+      }
+
+      previousTime = time
+      animationFrame = window.requestAnimationFrame(animate)
+    }
+
+    animationFrame = window.requestAnimationFrame(animate)
+
+    return () => window.cancelAnimationFrame(animationFrame)
+  }, [])
+
+  function scrollScreenshots(direction: -1 | 1) {
+    const track = screenshotTrackRef.current
+
+    if (!track) {
+      return
+    }
+
+    screenshotPausedRef.current = true
+    track.scrollBy({
+      left: direction * 300,
+      behavior: "smooth",
+    })
+    window.setTimeout(() => {
+      screenshotPausedRef.current =
+        track.matches(":hover") || track.contains(document.activeElement)
+    }, 700)
+  }
+
   return (
     <section className="feature-section" id="features" aria-labelledby="features-title">
       <div className="feature-section-heading">
@@ -107,10 +172,10 @@ export function FeatureOverview() {
           <Badge variant="outline" className="eyebrow">
             <ShieldCheck size={13} /> Care through every journey
           </Badge>
-          <h2 id="features-title">More confidence, from pickup to arrival.</h2>
+          <h2 id="features-title">Daycare and care, with coordination built in.</h2>
           <p>
-            Zorora connects families with trusted transport and care, while
-            keeping the people involved informed along the way.
+            Discover providers and manage care bookings. Transport, tracking,
+            and handovers support the people caring for your dependents.
           </p>
         </div>
         <div className="feature-heading-mark" aria-hidden="true">
@@ -118,8 +183,9 @@ export function FeatureOverview() {
         </div>
       </div>
       <div className="feature-grid">
-        {features.map(({ icon: Icon, title, description }, index) => (
+        {features.map(({ icon: Icon, splash, title, description }, index) => (
           <Card className="feature-card glass-card" key={title} style={{ animationDelay: `${index * 45}ms` }}>
+            <img className="feature-card-splash" src={`/images/${splash}`} alt="" aria-hidden="true" loading="lazy" />
             <CardHeader>
               <span className="feature-icon"><Icon /></span>
               <span className="feature-number">{String(index + 1).padStart(2, "0")}</span>
@@ -135,18 +201,60 @@ export function FeatureOverview() {
             <MapPinned size={13} /> A look inside Zorora
           </Badge>
           <h2>See care come together.</h2>
-          <p>Explore the app screens for bookings, journey activity, and account tools.</p>
+          <p>Explore daycare bookings, care services, and the tools that keep guardians connected.</p>
+        </div>
+        <div className="screenshot-controls" aria-label="Screenshot navigation">
+          <Button
+            aria-label="Scroll screenshots left"
+            onClick={() => scrollScreenshots(-1)}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            aria-label="Scroll screenshots right"
+            onClick={() => scrollScreenshots(1)}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronRight />
+          </Button>
         </div>
       </div>
-      <div className="feature-visual-grid screenshot-gallery">
-        {screenshots.map(({ image, alt, title, detail }) => (
-          <figure className="feature-visual-card screenshot-card" key={image}>
-            <img src={`/images/${image}`} alt={alt} loading="lazy" />
-            <figcaption className="feature-visual-caption">
-              <span><strong>{title}</strong><small>{detail}</small></span>
-            </figcaption>
-          </figure>
-        ))}
+      <div
+        ref={screenshotTrackRef}
+        className="feature-visual-grid screenshot-gallery"
+        role="region"
+        aria-label="Scrollable Zorora app screenshots"
+        aria-live="off"
+        tabIndex={0}
+        onPointerEnter={() => { screenshotPausedRef.current = true }}
+        onPointerLeave={() => { screenshotPausedRef.current = false }}
+        onFocus={() => { screenshotPausedRef.current = true }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            screenshotPausedRef.current = false
+          }
+        }}
+      >
+        {[...screenshots, ...screenshots].map(({ image, alt, title, detail }, index) => {
+          const isDuplicate = index >= screenshots.length
+
+          return (
+            <figure
+              className="feature-visual-card screenshot-card"
+              data-gallery-copy={isDuplicate && index === screenshots.length ? "duplicate" : undefined}
+              aria-hidden={isDuplicate}
+              key={`${image}-${index}`}
+            >
+              <img src={`/images/${image}`} alt={alt} loading="lazy" />
+              <figcaption className="feature-visual-caption">
+                <span><strong>{title}</strong><small>{detail}</small></span>
+              </figcaption>
+            </figure>
+          )
+        })}
       </div>
       <p className="feature-footnote">
         Features and availability may vary by release. Check the release notes

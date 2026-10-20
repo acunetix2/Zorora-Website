@@ -3,7 +3,7 @@
 
   # Zorora Downloads
 
-  **Official Android releases. Safer journeys.**
+  **Official Android releases. Care, connected.**
 
   The responsive release portal for the Zorora mobile app.
 
@@ -15,81 +15,15 @@
 
 ## Overview
 
-Zorora Downloads helps people find official Zorora Android releases and
-download installable APK files. Release information and files are retrieved
-server-side from the private `acunetix2/Zorora` repository; the GitHub token is
-never sent to the browser.
-
-The portal is built with React, TypeScript, Vite, Tailwind CSS, and the
-shadcn-style UI components in `src/components/ui`. Its dark charcoal and teal
-palette follows the Zorora mobile app.
+Zorora Downloads is the Android release portal for the Zorora mobile app.
+Zorora connects guardians with daycare and care providers, supports care
+bookings, and coordinates dependent transport and tracking when needed.
 
 ## Features
 
-- Browse stable and pre-release Android releases and their release notes.
-- Search by release name, tag, notes, or Android package filename.
-- Look up releases by their six-digit release code.
-- Open dedicated release-detail pages and navigate without full-page reloads.
-- Refresh releases on page load, every five minutes, and when returning to an
-  inactive tab; refresh manually at any time.
-- Download APKs through the portal with transfer progress and visible errors.
-- View Zorora screenshots, product features, and download help.
-- Use the portal on desktop, tablet, and mobile.
+The portal features official APK releases, release notes, direct downloads,
+and a responsive preview of the Zorora app.
 
-## Configure private GitHub access
+## Built with
 
-The Vercel serverless functions need a GitHub token to read private releases.
-Create a fine-grained personal access token restricted to the `acunetix2/Zorora`
-repository with **Contents: read-only** permission. Add it to the Vercel project
-as the `GITHUB_TOKEN` environment variable for the environments where the
-portal is deployed, then redeploy. Do not add the token to frontend code,
-`VITE_*` variables, or committed files.
-
-For local development, provide `GITHUB_TOKEN` in the server process
-environment before running the Vercel functions. Without it, `/api/releases`
-and `/api/download` return a configuration error instead of making anonymous
-requests.
-
-## Releases and downloads
-
-The portal retrieves release metadata through `/api/releases`. Only published
-releases are shown, and the download proxy verifies that a requested asset is
-an APK before streaming it from GitHub. Only installable APKs are exposed by
-the public portal; source archives and other release assets are not made
-downloadable.
-
-Files are streamed through the portal, then buffered by the browser for
-transfer progress and saved locally when complete. Large downloads need enough
-browser memory to buffer the file.
-
-## Project structure
-
-```text
-src/
-├── components/        Shared release, feature, issue, and footer components
-├── components/ui/     Provided shadcn-style UI primitives
-├── lib/               Release types and shared helpers
-└── pages/             Home, About, Help, and release-detail pages
-api/
-├── releases.js        Server-side private release metadata proxy
-└── download.js        Server-side APK verification and streaming proxy
-public/
-├── images/            Zorora mobile app screenshots
-├── favicon.svg
-└── zorora-logo.svg
-```
-
-## Report an issue
-
-Use the **Found a problem?** section in the portal to contact the developer.
-Do not include passwords, authentication codes, private notes, or other
-sensitive information in a support request.
-
-## Maintainer
-
-[![Developed by Aventorgo LLC](https://img.shields.io/badge/Developed%20by-Aventorgo%20LLC-00CBB2?style=for-the-badge)](https://www.aventorgo.xyz)
-
-## License
-
-This repository does not currently include a `LICENSE` file. No license to
-reuse, modify, or redistribute the portal source is granted by this README.
+React, TypeScript, Vite, Tailwind CSS, and shadcn-style UI components.

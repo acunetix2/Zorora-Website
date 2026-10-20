@@ -33,7 +33,7 @@ export function SiteFooter({
             <img src="/zorora-logo.svg" alt="" />
             <span>Zorora</span>
           </a>
-          <p>Safer journeys, with care at every step.</p>
+          <p>Daycare and dependent care, connected.</p>
           <a className="footer-company-link" href="https://www.aventorgo.xyz" target="_blank" rel="noreferrer">
             Developed by Aventorgo LLC <ExternalLink size={12} />
           </a>
@@ -77,8 +77,7 @@ export function SiteFooter({
       </div>
       <div className="footer-bottom">
         <span className="footer-disclaimer">
-          Android is a trademark of Google LLC. Zorora and Aventorgo LLC are not
-          affiliated with or endorsed by Google LLC.
+          Zorora is a product of Aventorgo LLC.
         </span>
         <a href="#top" onClick={(event) => {
           event.preventDefault()
