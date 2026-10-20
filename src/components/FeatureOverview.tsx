@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import {
   CalendarCheck,
   CarFront,
@@ -112,12 +112,57 @@ const screenshots = [
 
 export function FeatureOverview() {
   const screenshotTrackRef = useRef<HTMLDivElement>(null)
+  const screenshotPausedRef = useRef(false)
+
+  useEffect(() => {
+    const track = screenshotTrackRef.current
+
+    if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return
+    }
+
+    const duplicate = track.querySelector<HTMLElement>("[data-gallery-copy='duplicate']")
+
+    if (!duplicate) {
+      return
+    }
+
+    let animationFrame = 0
+    let previousTime = 0
+    const loopWidth = duplicate.getBoundingClientRect().left - track.getBoundingClientRect().left
+
+    const animate = (time: number) => {
+      if (previousTime && !screenshotPausedRef.current) {
+        const elapsed = Math.min(time - previousTime, 50)
+        const nextPosition = track.scrollLeft + elapsed * 0.02
+        track.scrollLeft = nextPosition >= loopWidth ? nextPosition - loopWidth : nextPosition
+      }
+
+      previousTime = time
+      animationFrame = window.requestAnimationFrame(animate)
+    }
+
+    animationFrame = window.requestAnimationFrame(animate)
+
+    return () => window.cancelAnimationFrame(animationFrame)
+  }, [])
 
   function scrollScreenshots(direction: -1 | 1) {
-    screenshotTrackRef.current?.scrollBy({
+    const track = screenshotTrackRef.current
+
+    if (!track) {
+      return
+    }
+
+    screenshotPausedRef.current = true
+    track.scrollBy({
       left: direction * 300,
       behavior: "smooth",
     })
+    window.setTimeout(() => {
+      screenshotPausedRef.current =
+        track.matches(":hover") || track.contains(document.activeElement)
+    }, 700)
   }
 
   return (
@@ -182,16 +227,34 @@ export function FeatureOverview() {
         className="feature-visual-grid screenshot-gallery"
         role="region"
         aria-label="Scrollable Zorora app screenshots"
+        aria-live="off"
         tabIndex={0}
+        onPointerEnter={() => { screenshotPausedRef.current = true }}
+        onPointerLeave={() => { screenshotPausedRef.current = false }}
+        onFocus={() => { screenshotPausedRef.current = true }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            screenshotPausedRef.current = false
+          }
+        }}
       >
-        {screenshots.map(({ image, alt, title, detail }) => (
-          <figure className="feature-visual-card screenshot-card" key={image}>
-            <img src={`/images/${image}`} alt={alt} loading="lazy" />
-            <figcaption className="feature-visual-caption">
-              <span><strong>{title}</strong><small>{detail}</small></span>
-            </figcaption>
-          </figure>
-        ))}
+        {[...screenshots, ...screenshots].map(({ image, alt, title, detail }, index) => {
+          const isDuplicate = index >= screenshots.length
+
+          return (
+            <figure
+              className="feature-visual-card screenshot-card"
+              data-gallery-copy={isDuplicate && index === screenshots.length ? "duplicate" : undefined}
+              aria-hidden={isDuplicate}
+              key={`${image}-${index}`}
+            >
+              <img src={`/images/${image}`} alt={alt} loading="lazy" />
+              <figcaption className="feature-visual-caption">
+                <span><strong>{title}</strong><small>{detail}</small></span>
+              </figcaption>
+            </figure>
+          )
+        })}
       </div>
       <p className="feature-footnote">
         Features and availability may vary by release. Check the release notes
