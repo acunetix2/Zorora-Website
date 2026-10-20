@@ -1,6 +1,9 @@
+import { useRef } from "react"
 import {
   CalendarCheck,
   CarFront,
+  ChevronLeft,
+  ChevronRight,
   HeartHandshake,
   MapPinned,
   Search,
@@ -9,6 +12,7 @@ import {
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
@@ -107,6 +111,15 @@ const screenshots = [
 ]
 
 export function FeatureOverview() {
+  const screenshotTrackRef = useRef<HTMLDivElement>(null)
+
+  function scrollScreenshots(direction: -1 | 1) {
+    screenshotTrackRef.current?.scrollBy({
+      left: direction * 300,
+      behavior: "smooth",
+    })
+  }
+
   return (
     <section className="feature-section" id="features" aria-labelledby="features-title">
       <div className="feature-section-heading">
@@ -145,8 +158,32 @@ export function FeatureOverview() {
           <h2>See care come together.</h2>
           <p>Explore daycare bookings, care services, and the tools that keep guardians connected.</p>
         </div>
+        <div className="screenshot-controls" aria-label="Screenshot navigation">
+          <Button
+            aria-label="Scroll screenshots left"
+            onClick={() => scrollScreenshots(-1)}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            aria-label="Scroll screenshots right"
+            onClick={() => scrollScreenshots(1)}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
       </div>
-      <div className="feature-visual-grid screenshot-gallery">
+      <div
+        ref={screenshotTrackRef}
+        className="feature-visual-grid screenshot-gallery"
+        role="region"
+        aria-label="Scrollable Zorora app screenshots"
+        tabIndex={0}
+      >
         {screenshots.map(({ image, alt, title, detail }) => (
           <figure className="feature-visual-card screenshot-card" key={image}>
             <img src={`/images/${image}`} alt={alt} loading="lazy" />
