@@ -77,8 +77,7 @@ export function SiteFooter({
       </div>
       <div className="footer-bottom">
         <span className="footer-disclaimer">
-          Android is a trademark of Google LLC. Zorora and Aventorgo LLC are not
-          affiliated with or endorsed by Google LLC.
+          Zorora is a product of Aventorgo LLC.
         </span>
         <a href="#top" onClick={(event) => {
           event.preventDefault()
