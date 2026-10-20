@@ -169,10 +169,11 @@ export function HomePage({
             <span className="live-dot" />
             Official Zorora releases
           </Badge>
-          <h1>Safer journeys.<br /><span>More peace of mind.</span></h1>
+          <h1>Care starts here.<br /><span>Daycare, made easier.</span></h1>
           <p className="hero-description">
-            Download the Zorora app to book trusted transport and care, manage
-            dependent journeys, and stay informed from pickup to arrival.
+            Discover daycare and care providers, manage bookings, and keep the
+            people supporting your dependent connected. Transport and tracking
+            help every transition stay coordinated.
           </p>
           <div className="hero-actions">
             <Button
@@ -202,14 +203,20 @@ export function HomePage({
           </div>
           <div className="hero-trust">
             <span><Check size={14} /> Official Android builds</span>
-            <span><Check size={14} /> Secure journey tools</span>
-            <span><Check size={14} /> Built around care</span>
+            <span><Check size={14} /> Daycare and care bookings</span>
+            <span><Check size={14} /> Guardians and providers connected</span>
           </div>
         </div>
 
         <div className="hero-art" aria-label="Zorora app preview">
           <div className="orb orb-back" />
           <div className="orb orb-front" />
+          <img
+            className="hero-daycare-splash"
+            src="/images/daycare-classroom.jpg"
+            alt=""
+            aria-hidden="true"
+          />
           <div className="hero-screenshot-frame">
             <img
               className="hero-screenshot"
@@ -217,7 +224,7 @@ export function HomePage({
               alt="Zorora mobile app home screen"
               loading="eager"
             />
-            <span className="hero-screenshot-label"><Check size={12} /> Care for every journey</span>
+            <span className="hero-screenshot-label"><Check size={12} /> Daycare and dependent care</span>
           </div>
           <Card className="preview-card glass-card">
             <CardHeader>
@@ -225,7 +232,7 @@ export function HomePage({
                 <img src="/zorora-logo.svg" alt="" />
                 <div>
                   <CardTitle>Zorora</CardTitle>
-                  <CardDescription>Trusted journeys · built around care</CardDescription>
+                  <CardDescription>Care services · supported by coordination</CardDescription>
                 </div>
               </div>
               <CardAction>
@@ -235,11 +242,11 @@ export function HomePage({
               </CardAction>
             </CardHeader>
             <CardContent>
-              <div className="preview-label"><ShieldCheck size={14} /> Peace of mind, built in</div>
+              <div className="preview-label"><ShieldCheck size={14} /> Care coordination, built in</div>
               <div className="preview-task">
                 <span className="task-check"><Check size={13} /></span>
-                <span>Journey updates, in one place</span>
-                <span className="task-time">Live</span>
+                <span>Daycare booking requests</span>
+                <span className="task-time">Care</span>
               </div>
               <div className="preview-task muted-task">
                 <span className="task-circle" />
@@ -249,7 +256,7 @@ export function HomePage({
             </CardContent>
             <CardFooter className="preview-footer">
               <div className="mini-avatars" aria-hidden="true"><span>Z</span><span>+</span><span>✓</span></div>
-              <span>Safer journeys, from start to finish.</span>
+              <span>Care providers and guardians, connected.</span>
             </CardFooter>
           </Card>
           <div className="floating-chip chip-top">
@@ -258,15 +265,15 @@ export function HomePage({
           </div>
           <div className="floating-chip chip-bottom">
             <span className="chip-location"><MapPin size={16} /></span>
-            <span><strong>Know where they are</strong><small>Journey updates as they happen</small></span>
+            <span><strong>Care that stays connected</strong><small>Bookings and provider updates</small></span>
           </div>
           <div className="floating-chip chip-focus">
             <span className="chip-focus-icon"><Timer size={15} /></span>
-            <span><strong>Trusted handovers</strong><small>Care at every arrival</small></span>
+            <span><strong>Trusted daycare</strong><small>Care providers in one place</small></span>
           </div>
           <div className="floating-chip chip-plan">
             <span className="chip-plan-icon"><CalendarDays size={15} /></span>
-            <span><strong>Care that connects</strong><small>Families, providers, and drivers</small></span>
+            <span><strong>Support for every day</strong><small>Guardians, providers, and drivers</small></span>
           </div>
           <div className="hero-orbit orbit-one" />
           <div className="hero-orbit orbit-two" />
@@ -279,7 +286,7 @@ export function HomePage({
             <Badge variant="outline" className="eyebrow section-eyebrow">
               <ArrowDownToLine size={13} /> Zorora for Android
             </Badge>
-            <h2>Bring trusted care along.</h2>
+            <h2>Find your next care connection.</h2>
             <p>Choose an official Android release and download it securely through this page.</p>
           </div>
           <div className="release-count">
@@ -507,10 +514,11 @@ export function HomePage({
       <section className="help-section" id="about">
         <div className="help-copy">
           <Badge variant="outline" className="eyebrow"><Heart size={13} /> Care at every step</Badge>
-          <h2>Every journey.<br /><span>More peace of mind.</span></h2>
+          <h2>Care, connected.<br /><span>From booking onward.</span></h2>
           <p>
-            Zorora brings guardians, drivers, and care providers together to
-            coordinate journeys and keep the people who matter connected.
+            Find daycare and care providers, manage bookings, and keep guardians
+            and providers in sync. Transport coordination supports care when
+            dependents need to travel.
           </p>
           <div className="help-links">
             <Button onClick={() => onNavigate("/about")} variant="outline">About Zorora <ArrowRight /></Button>
@@ -525,7 +533,7 @@ export function HomePage({
           </CardHeader>
           <CardContent>
             <p className="message-bubble">
-              Trusted journeys and care, connected in one place.
+              Discover care, manage bookings, and coordinate support for your dependents.
             </p>
           </CardContent>
           <CardFooter className="help-card-footer">

@@ -33,7 +33,7 @@ export function SiteFooter({
             <img src="/zorora-logo.svg" alt="" />
             <span>Zorora</span>
           </a>
-          <p>Safer journeys, with care at every step.</p>
+          <p>Daycare and dependent care, connected.</p>
           <a className="footer-company-link" href="https://www.aventorgo.xyz" target="_blank" rel="noreferrer">
             Developed by Aventorgo LLC <ExternalLink size={12} />
           </a>

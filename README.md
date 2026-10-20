@@ -3,7 +3,7 @@
 
   # Zorora Downloads
 
-  **Official Android releases. Safer journeys.**
+  **Official Android releases. Care, connected.**
 
   The responsive release portal for the Zorora mobile app.
 
@@ -16,7 +16,9 @@
 ## Overview
 
 Zorora Downloads helps people find official Zorora Android releases and
-download installable APK files. Release information and files are retrieved
+download installable APK files. The Zorora app connects guardians with daycare
+and care providers, supports care bookings, and coordinates dependent transport
+and tracking when needed. Release information and files are retrieved
 server-side from the private `acunetix2/Zorora` repository; the GitHub token is
 never sent to the browser.
 
@@ -33,7 +35,8 @@ palette follows the Zorora mobile app.
 - Refresh releases on page load, every five minutes, and when returning to an
   inactive tab; refresh manually at any time.
 - Download APKs through the portal with transfer progress and visible errors.
-- View Zorora screenshots, product features, and download help.
+- Browse daycare-focused product features and real care photography alongside
+  Zorora app screenshots and download help.
 - Use the portal on desktop, tablet, and mobile.
 
 ## Configure private GitHub access
@@ -62,22 +65,13 @@ Files are streamed through the portal, then buffered by the browser for
 transfer progress and saved locally when complete. Large downloads need enough
 browser memory to buffer the file.
 
-## Project structure
+## Photo credits
 
-```text
-src/
-├── components/        Shared release, feature, issue, and footer components
-├── components/ui/     Provided shadcn-style UI primitives
-├── lib/               Release types and shared helpers
-└── pages/             Home, About, Help, and release-detail pages
-api/
-├── releases.js        Server-side private release metadata proxy
-└── download.js        Server-side APK verification and streaming proxy
-public/
-├── images/            Zorora mobile app screenshots
-├── favicon.svg
-└── zorora-logo.svg
-```
+The daycare splash photographs are real images sourced from Wikimedia Commons:
+
+- [Preschool classroom](https://commons.wikimedia.org/wiki/File:ASYMCA_to_launch_new_preschool_classes_in_2014_131106-D-RT812-014.jpg) — Christine Cabalo, public domain.
+- [Daycare attendee](https://commons.wikimedia.org/wiki/File:Daycare_Attendee.jpg) — Shadowguy97, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+- [Daycare playground](https://commons.wikimedia.org/wiki/File:Daycare_center_playground,_Hakodate,_Japan.jpg) — OKJaguar, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ## Report an issue
 

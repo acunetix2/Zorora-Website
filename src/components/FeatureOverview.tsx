@@ -1,8 +1,9 @@
 import {
+  CalendarCheck,
   CarFront,
-  CreditCard,
   HeartHandshake,
   MapPinned,
+  Search,
   ShieldCheck,
   UsersRound,
 } from "lucide-react"
@@ -17,43 +18,49 @@ import {
 
 const features = [
   {
-    icon: CarFront,
-    title: "Book trusted journeys",
-    description: "Arrange transport for the people who depend on you, with clear journey details.",
+    icon: Search,
+    splash: "daycare-classroom.jpg",
+    title: "Discover trusted daycare",
+    description: "Browse daycare and care providers near you, with service details in one place.",
   },
   {
-    icon: MapPinned,
-    title: "Follow journeys live",
-    description: "Stay up to date with location and journey progress from pickup to arrival.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Coordinate safe handovers",
-    description: "Manage authorized receivers and make each custody transfer easier to verify.",
+    icon: CalendarCheck,
+    splash: "daycare-care.jpg",
+    title: "Manage care bookings",
+    description: "Request and manage daycare and care services for your dependents.",
   },
   {
     icon: HeartHandshake,
-    title: "Find care near you",
-    description: "Explore transport, daycare, school, and other trusted care services.",
+    splash: "daycare-playground.jpg",
+    title: "Keep care organized",
+    description: "Coordinate bookings, availability, and important care information.",
+  },
+  {
+    icon: ShieldCheck,
+    splash: "daycare-care.jpg",
+    title: "Coordinate safe handovers",
+    description: "Connect care bookings with authorized pickup and drop-off arrangements.",
   },
   {
     icon: UsersRound,
-    title: "Keep everyone connected",
-    description: "Bring guardians, providers, and drivers together around the same journey.",
+    splash: "daycare-classroom.jpg",
+    title: "Connect guardians and providers",
+    description: "Keep the people supporting a dependent informed and working together.",
   },
   {
-    icon: CreditCard,
-    title: "Manage journey payments",
-    description: "Review payment options and keep journey-related transactions in one place.",
+    icon: CarFront,
+    splash: "daycare-playground.jpg",
+    title: "Coordinate supporting transport",
+    description: "Track trips between home, school, and care when a dependent needs a ride.",
   },
 ]
 
 const screenshots = [
   {
-    image: "services.jpeg",
-    alt: "Zorora services for rides, daycare, family, schools, and care",
-    title: "Services for every journey",
-    detail: "Find rides and care in one place.",
+    image: "daycarebookings.jpeg",
+    alt: "Zorora daycare bookings and booking status",
+    title: "Daycare bookings",
+    detail: "Keep care requests organized.",
   },
   {
     image: "activity.jpeg",
@@ -62,10 +69,10 @@ const screenshots = [
     detail: "Follow requests and journey updates.",
   },
   {
-    image: "daycarebookings.jpeg",
-    alt: "Zorora daycare bookings and booking status",
-    title: "Care bookings",
-    detail: "Keep daycare requests organized.",
+    image: "services.jpeg",
+    alt: "Zorora services for daycare, family, schools, and transport",
+    title: "Care and support services",
+    detail: "Find care alongside related services.",
   },
   {
     image: "login.jpeg",
@@ -107,10 +114,10 @@ export function FeatureOverview() {
           <Badge variant="outline" className="eyebrow">
             <ShieldCheck size={13} /> Care through every journey
           </Badge>
-          <h2 id="features-title">More confidence, from pickup to arrival.</h2>
+          <h2 id="features-title">Daycare and care, with coordination built in.</h2>
           <p>
-            Zorora connects families with trusted transport and care, while
-            keeping the people involved informed along the way.
+            Discover providers and manage care bookings. Transport, tracking,
+            and handovers support the people caring for your dependents.
           </p>
         </div>
         <div className="feature-heading-mark" aria-hidden="true">
@@ -118,8 +125,9 @@ export function FeatureOverview() {
         </div>
       </div>
       <div className="feature-grid">
-        {features.map(({ icon: Icon, title, description }, index) => (
+        {features.map(({ icon: Icon, splash, title, description }, index) => (
           <Card className="feature-card glass-card" key={title} style={{ animationDelay: `${index * 45}ms` }}>
+            <img className="feature-card-splash" src={`/images/${splash}`} alt="" aria-hidden="true" loading="lazy" />
             <CardHeader>
               <span className="feature-icon"><Icon /></span>
               <span className="feature-number">{String(index + 1).padStart(2, "0")}</span>
@@ -135,7 +143,7 @@ export function FeatureOverview() {
             <MapPinned size={13} /> A look inside Zorora
           </Badge>
           <h2>See care come together.</h2>
-          <p>Explore the app screens for bookings, journey activity, and account tools.</p>
+          <p>Explore daycare bookings, care services, and the tools that keep guardians connected.</p>
         </div>
       </div>
       <div className="feature-visual-grid screenshot-gallery">

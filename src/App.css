@@ -284,6 +284,22 @@ main,
   place-items: center;
 }
 
+.hero-daycare-splash {
+  position: absolute;
+  z-index: 0;
+  inset: 25px 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 50px);
+  border: 1px solid rgb(0 203 178 / 14%);
+  border-radius: 26px;
+  object-fit: cover;
+  object-position: center 42%;
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 28px 70px rgb(0 0 0 / 35%);
+  pointer-events: none;
+}
+
 .hero-screenshot-frame {
   position: absolute;
   z-index: 1;
@@ -2619,7 +2635,9 @@ main,
 }
 
 .feature-card {
+  position: relative;
   min-height: 190px;
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 18px;
   background: var(--cm-glass);
@@ -2627,6 +2645,30 @@ main,
   backdrop-filter: blur(18px);
   animation: rise-in 430ms both;
   transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.feature-card::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--cm-card) 0%, rgb(23 23 23 / 94%) 34%, rgb(23 23 23 / 66%) 50%, rgb(23 23 23 / 8%) 73%, transparent 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.feature-card-splash {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  opacity: 1;
+}
+
+.feature-card [data-slot="card-header"] {
+  position: relative;
+  z-index: 1;
 }
 
 .feature-card:hover {
