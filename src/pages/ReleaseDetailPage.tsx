@@ -1,4 +1,4 @@
-import { ArrowDownToLine, ArrowLeft, CalendarDays, FileArchive, PackageCheck } from "lucide-react"
+import { ArrowDownToLine, ArrowLeft, CalendarDays, PackageCheck } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -23,7 +23,7 @@ export function ReleaseDetailPage({
   onBack: () => void
   onDownload: (asset: ReturnType<typeof releaseDownloads>[number]) => void
 }) {
-  const assets = releaseDownloads(release, "all")
+  const assets = releaseDownloads(release)
   const notes = sanitizeReleaseNotes(release.body)
 
   return (
@@ -71,19 +71,22 @@ export function ReleaseDetailPage({
 
         <Card className="glass-card detail-assets">
           <CardHeader>
-            <div className="page-icon"><FileArchive /></div>
-            <CardTitle>Available files</CardTitle>
-            <CardDescription>{assets.length} {assets.length === 1 ? "download" : "downloads"} in this release.</CardDescription>
+            <div className="page-icon"><PackageCheck /></div>
+            <CardTitle>Android APK</CardTitle>
+            <CardDescription>Official install file for this release.</CardDescription>
           </CardHeader>
           <CardContent>
             {assets.length > 0 ? (
               <ul className="asset-list">
                 {assets.map((asset) => (
                   <li key={asset.id}>
-                    <div className="asset-file-icon"><FileArchive /></div>
+                    <div className="asset-file-icon"><PackageCheck /></div>
                     <div className="asset-file-info">
                       <strong>{asset.name}</strong>
-                      <span>{asset.size ? formatSize(asset.size) : "Size unavailable"}</span>
+                      <span>
+                        {"APK · "}
+                        {asset.size ? formatSize(asset.size) : "Size unavailable"}
+                      </span>
                     </div>
                     <Button
                       aria-label={`Download ${asset.name}`}
@@ -97,7 +100,7 @@ export function ReleaseDetailPage({
                 ))}
               </ul>
             ) : (
-              <p className="detail-empty-notes">No installable assets were attached to this release.</p>
+              <p className="detail-empty-notes">No install file was attached to this release.</p>
             )}
           </CardContent>
         </Card>

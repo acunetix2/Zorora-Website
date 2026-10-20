@@ -42,13 +42,11 @@ import type {
   DownloadJob,
   DownloadOption,
   GithubRelease,
-  Platform,
 } from "@/lib/releases"
 
 export function ReleaseCard({
   release,
   index,
-  platform,
   compact,
   onCopy,
   onDownload,
@@ -57,14 +55,18 @@ export function ReleaseCard({
 }: {
   release: GithubRelease
   index: number
-  platform: Platform
   compact: boolean
   onCopy: (value: string, label: string) => void
   onDownload: (asset: DownloadOption) => void
   downloadJobs: DownloadJob[]
   onOpen: () => void
 }) {
-  const assets = releaseDownloads(release, platform)
+  const assets = releaseDownloads(release)
+  const installableApk = assets[0]
+  const additionalAssetCount = assets.length - Number(Boolean(installableApk))
+  const isApkDownloading = installableApk && downloadJobs.some(
+    (job) => job.name === installableApk.name && job.status === "downloading",
+  )
   const notes = sanitizeReleaseNotes(release.body) || "No release notes were added for this build."
   const code = shortReleaseCode(release)
 
@@ -132,31 +134,25 @@ export function ReleaseCard({
       <CardFooter className="release-card-footer">
         <div className="asset-summary">
           <span className="asset-count">{assets.length}</span>
-          <span>{assets.length === 1 ? "download" : "downloads"}</span>
+          <span>{assets.length === 1 ? "file" : "files"}</span>
           {assets.length > 0 && assets.every((asset) => asset.size !== null) && (
             <span className="asset-total">{formatSize(assets.reduce((sum, asset) => sum + (asset.size ?? 0), 0))}</span>
           )}
         </div>
-        {assets.length > 0 ? (
+        {installableApk ? (
           <div className="asset-actions">
-            {assets.slice(0, 2).map((asset) => {
-              const downloading = downloadJobs.some((job) => job.name === asset.name && job.status === "downloading")
-              return (
-                <Button
-                  key={asset.id}
-                  className="download-button"
-                  onClick={() => onDownload(asset)}
-                  disabled={downloading}
-                  size="sm"
-                >
-                  {downloading ? <Spinner /> : <ArrowDownToLine />}
-                  <span>{asset.name}</span>
-                </Button>
-              )
-            })}
-            {assets.length > 2 && (
+            <Button
+              className="download-button"
+              onClick={() => onDownload(installableApk)}
+              disabled={isApkDownloading}
+              size="sm"
+            >
+              {isApkDownloading ? <Spinner /> : <ArrowDownToLine />}
+              <span>Download APK</span>
+            </Button>
+            {additionalAssetCount > 0 && (
               <Button className="more-assets" onClick={onOpen} size="sm" variant="outline">
-                +{assets.length - 2} more
+                {additionalAssetCount} more {additionalAssetCount === 1 ? "file" : "files"}
               </Button>
             )}
           </div>

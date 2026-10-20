@@ -1,11 +1,10 @@
 import {
-  AudioLines,
-  CalendarClock,
-  CheckCheck,
-  Repeat2,
-  Sparkles,
-  Timer,
-  TrendingUp,
+  CarFront,
+  CreditCard,
+  HeartHandshake,
+  MapPinned,
+  ShieldCheck,
+  UsersRound,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -18,34 +17,85 @@ import {
 
 const features = [
   {
-    icon: CheckCheck,
-    title: "A clear place for tasks",
-    description: "Capture what needs doing, keep it organized, and make the next step feel manageable.",
+    icon: CarFront,
+    title: "Book trusted journeys",
+    description: "Arrange transport for the people who depend on you, with clear journey details.",
   },
   {
-    icon: AudioLines,
-    title: "Voice-powered capture",
-    description: "Get an idea out of your head quickly with voice input and review it before it becomes a task.",
+    icon: MapPinned,
+    title: "Follow journeys live",
+    description: "Stay up to date with location and journey progress from pickup to arrival.",
   },
   {
-    icon: CalendarClock,
-    title: "Plan around your day",
-    description: "Shape a realistic schedule and review your plan when the day changes.",
+    icon: ShieldCheck,
+    title: "Coordinate safe handovers",
+    description: "Manage authorized receivers and make each custody transfer easier to verify.",
   },
   {
-    icon: Repeat2,
-    title: "Routines that repeat",
-    description: "Set recurring tasks so the important regular things don’t have to be recreated each time.",
+    icon: HeartHandshake,
+    title: "Find care near you",
+    description: "Explore transport, daycare, school, and other trusted care services.",
   },
   {
-    icon: Timer,
-    title: "Make room for focus",
-    description: "Use focused work sessions to give one task your attention, with breaks when you need them.",
+    icon: UsersRound,
+    title: "Keep everyone connected",
+    description: "Bring guardians, providers, and drivers together around the same journey.",
   },
   {
-    icon: TrendingUp,
-    title: "See your progress",
-    description: "Review weekly progress and celebrate steady effort—not just a perfect to-do list.",
+    icon: CreditCard,
+    title: "Manage journey payments",
+    description: "Review payment options and keep journey-related transactions in one place.",
+  },
+]
+
+const screenshots = [
+  {
+    image: "services.jpeg",
+    alt: "Zorora services for rides, daycare, family, schools, and care",
+    title: "Services for every journey",
+    detail: "Find rides and care in one place.",
+  },
+  {
+    image: "activity.jpeg",
+    alt: "Zorora activity feed showing journey requests and map progress",
+    title: "Journey activity",
+    detail: "Follow requests and journey updates.",
+  },
+  {
+    image: "daycarebookings.jpeg",
+    alt: "Zorora daycare bookings and booking status",
+    title: "Care bookings",
+    detail: "Keep daycare requests organized.",
+  },
+  {
+    image: "login.jpeg",
+    alt: "Zorora secure sign-in screen",
+    title: "A secure sign-in",
+    detail: "Access your Zorora account.",
+  },
+  {
+    image: "otp.jpeg",
+    alt: "Zorora identity verification screen with private details removed",
+    title: "Account verification",
+    detail: "Verify your identity before you continue.",
+  },
+  {
+    image: "wallet.jpeg",
+    alt: "Zorora wallet and payment history screen with private balance removed",
+    title: "Wallet and history",
+    detail: "Review journey payments and activity.",
+  },
+  {
+    image: "payment.jpeg",
+    alt: "Zorora payment methods screen",
+    title: "Flexible payments",
+    detail: "Choose from available payment methods.",
+  },
+  {
+    image: "settings.jpeg",
+    alt: "Zorora account and safety settings with personal details removed",
+    title: "Your account and safety",
+    detail: "Manage the details that keep journeys connected.",
   },
 ]
 
@@ -55,16 +105,16 @@ export function FeatureOverview() {
       <div className="feature-section-heading">
         <div>
           <Badge variant="outline" className="eyebrow">
-            <CheckCheck size={13} /> A kinder toolkit for your day
+            <ShieldCheck size={13} /> Care through every journey
           </Badge>
-          <h2 id="features-title">More clarity, built into the everyday.</h2>
+          <h2 id="features-title">More confidence, from pickup to arrival.</h2>
           <p>
-            CaliMind brings planning, focus, and reflection together to help you
-            move forward at a pace that works for you.
+            Zorora connects families with trusted transport and care, while
+            keeping the people involved informed along the way.
           </p>
         </div>
         <div className="feature-heading-mark" aria-hidden="true">
-          <span><CheckCheck /></span><span><Timer /></span><span><TrendingUp /></span>
+          <span><CarFront /></span><span><ShieldCheck /></span><span><HeartHandshake /></span>
         </div>
       </div>
       <div className="feature-grid">
@@ -79,27 +129,28 @@ export function FeatureOverview() {
           </Card>
         ))}
       </div>
-      <div className="feature-visual-grid">
-        <article className="feature-visual-card schedule-visual">
-          <img src="/images/schedule.jpeg" alt="CaliMind calendar and daily schedule view" loading="lazy" />
-          <div className="feature-visual-caption">
-            <span className="feature-visual-icon"><CalendarClock /></span>
-            <span><strong>See your day take shape</strong><small>Calendar, time blocks, and room to replan.</small></span>
-          </div>
-          <span className="visual-float visual-float-top">Plan with intention</span>
-        </article>
-        <article className="feature-visual-card settings-visual">
-          <img src="/images/settings.jpeg" alt="CaliMind settings for voice and account preferences" loading="lazy" />
-          <div className="feature-visual-caption">
-            <span className="feature-visual-icon"><Sparkles /></span>
-            <span><strong>Make it feel like yours</strong><small>Voice tools, profile, and useful preferences.</small></span>
-          </div>
-          <span className="visual-float visual-float-bottom">Thoughtful by design</span>
-        </article>
+      <div className="feature-section-heading screenshot-section-heading">
+        <div>
+          <Badge variant="outline" className="eyebrow">
+            <MapPinned size={13} /> A look inside Zorora
+          </Badge>
+          <h2>See care come together.</h2>
+          <p>Explore the app screens for bookings, journey activity, and account tools.</p>
+        </div>
+      </div>
+      <div className="feature-visual-grid screenshot-gallery">
+        {screenshots.map(({ image, alt, title, detail }) => (
+          <figure className="feature-visual-card screenshot-card" key={image}>
+            <img src={`/images/${image}`} alt={alt} loading="lazy" />
+            <figcaption className="feature-visual-caption">
+              <span><strong>{title}</strong><small>{detail}</small></span>
+            </figcaption>
+          </figure>
+        ))}
       </div>
       <p className="feature-footnote">
-        Feature availability can vary by platform and release. Check the release
-        notes for the latest changes.
+        Features and availability may vary by release. Check the release notes
+        for the latest information.
       </p>
     </section>
   )

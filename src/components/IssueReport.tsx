@@ -23,7 +23,7 @@ export function IssueReport() {
           <CardTitle id="issue-title">Found a problem?</CardTitle>
           <CardDescription>
             Tell us what happened. A clear report helps us understand and fix
-            issues for the whole CaliMind community.
+            issues for the whole Zorora community.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -33,13 +33,13 @@ export function IssueReport() {
             <span><ExternalLink size={15} /> Your app version and device</span>
           </div>
           <p className="issue-privacy-note">
-            For help, contact CaliMind’s developer. Please do not share passwords,
+            For help, contact Zorora’s developer. Please do not share passwords,
             private notes, or other sensitive information.
           </p>
           <div className="issue-actions">
             <Button
               nativeButton={false}
-              render={<a href="https://aventorgo.vercel.app/" target="_blank" rel="noreferrer" />}
+              render={<a href="https://www.aventorgo.xyz" target="_blank" rel="noreferrer" />}
               className="issue-primary"
               size="lg"
             >

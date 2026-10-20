@@ -285,8 +285,8 @@ function App() {
         <div className="ambient ambient-one" aria-hidden="true" />
         <div className="ambient ambient-two" aria-hidden="true" />
         <header className="topbar">
-          <a className="brand" href="/" onClick={(event) => navigateFromEvent(event, "/")} aria-label="CaliMind downloads home">
-            <img src="/calimind_logo.svg" alt="" /><span>CaliMind</span>
+          <a className="brand" href="/" onClick={(event) => navigateFromEvent(event, "/")} aria-label="Zorora downloads home">
+            <img src="/zorora-logo.svg" alt="" /><span>Zorora</span>
           </a>
           <NavigationMenu className="desktop-nav">
             <NavigationMenuList>
@@ -303,7 +303,7 @@ function App() {
                 >Features</NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink href="/about" aria-current={currentPath === "/about" ? "page" : undefined} onClick={(event) => navigateFromEvent(event, "/about")}>About CaliMind</NavigationMenuLink>
+                <NavigationMenuLink href="/about" aria-current={currentPath === "/about" ? "page" : undefined} onClick={(event) => navigateFromEvent(event, "/about")}>About Zorora</NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink href="/help" aria-current={currentPath === "/help" ? "page" : undefined} onClick={(event) => navigateFromEvent(event, "/help")}>Help center</NavigationMenuLink>
@@ -327,7 +327,7 @@ function App() {
                     Downloads <MenubarShortcut><Download size={13} /></MenubarShortcut>
                   </MenubarItem>
                   <MenubarItem onClick={navigateToFeatures}>Features</MenubarItem>
-                  <MenubarItem onClick={() => navigateTo("/about")}>About CaliMind</MenubarItem>
+                  <MenubarItem onClick={() => navigateTo("/about")}>About Zorora</MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem onClick={() => navigateTo("/help")}>Help center <CircleHelp size={13} /></MenubarItem>
                 </MenubarContent>

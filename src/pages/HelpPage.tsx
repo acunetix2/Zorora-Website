@@ -14,12 +14,12 @@ const steps = [
   {
     icon: CircleHelp,
     title: "Choose a release",
-    description: "Browse the release library or search by version, platform, or release code.",
+    description: "Browse official Android releases or search by version or release code.",
   },
   {
     icon: FileCheck2,
     title: "Pick the right file",
-    description: "Use the platform filter and check the file extension before downloading.",
+    description: "Choose the APK for the Android app version you want to install.",
   },
   {
     icon: Download,
@@ -34,7 +34,7 @@ export function HelpPage({ onNavigate }: { onNavigate: (path: string) => void })
       <Badge variant="outline" className="eyebrow"><CircleHelp size={13} /> Help center</Badge>
       <h1>We’ll get you<br /><span>on your way.</span></h1>
       <p className="page-lede">
-        A few quick answers to make finding and installing a CaliMind release easier.
+        Find an official Zorora Android release and download the app.
       </p>
 
       <div className="help-page-grid">
@@ -77,7 +77,7 @@ export function HelpPage({ onNavigate }: { onNavigate: (path: string) => void })
       <div className="support-callout glass-panel">
         <div>
           <span className="support-callout-icon"><CircleHelp /></span>
-          <div><strong>Still need a hand?</strong><p>Head back to the release library and try another build or platform.</p></div>
+          <div><strong>Still need a hand?</strong><p>Head back to the release library and try another Android build.</p></div>
         </div>
         <Button onClick={() => onNavigate("/")} variant="outline">Go to releases <ArrowRight /></Button>
       </div>

@@ -1,6 +1,6 @@
 import { once } from "node:events"
 
-const REPOSITORY = "hannsderrick23-debug/CaliMind"
+const REPOSITORY = "acunetix2/Zorora"
 const GITHUB_API_VERSION = "2022-11-28"
 
 function sendError(response, statusCode, message) {
@@ -19,30 +19,49 @@ export default async function handler(request, response) {
 
   const requestUrl = new URL(request.url ?? "/", `https://${request.headers.host ?? "localhost"}`)
   const assetId = requestUrl.searchParams.get("assetId")
-  const source = requestUrl.searchParams.get("source")
-  const tag = requestUrl.searchParams.get("tag")
-  let upstreamUrl
-  const headers = {}
+  const token = process.env.GITHUB_TOKEN
 
-  if (assetId && /^\d{1,20}$/.test(assetId)) {
-    upstreamUrl = `https://api.github.com/repos/${REPOSITORY}/releases/assets/${assetId}`
-    headers.Accept = "application/octet-stream"
-    headers["X-GitHub-Api-Version"] = GITHUB_API_VERSION
-  } else if (
-    (source === "zip" || source === "tar.gz") &&
-    tag &&
-    tag.length <= 128 &&
-    /^[A-Za-z0-9._-]+$/.test(tag)
-  ) {
-    upstreamUrl = `https://codeload.github.com/${REPOSITORY}/legacy.${source}/refs/tags/${encodeURIComponent(tag)}`
-  } else {
-    sendError(response, 400, "A valid release asset or source archive is required.")
+  if (!assetId || !/^\d{1,20}$/.test(assetId)) {
+    sendError(response, 400, "A valid Android release asset is required.")
     return
   }
 
+  if (!token) {
+    sendError(response, 503, "The private release source is not configured.")
+    return
+  }
+
+  const upstreamUrl = `https://api.github.com/repos/${REPOSITORY}/releases/assets/${assetId}`
+  const headers = {
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${token}`,
+    "X-GitHub-Api-Version": GITHUB_API_VERSION,
+  }
   let upstream
   try {
-    upstream = await fetch(upstreamUrl, { headers, redirect: "follow" })
+    const metadataResponse = await fetch(upstreamUrl, { headers })
+    if (!metadataResponse.ok) {
+      const statusCode = metadataResponse.status === 404 ? 404 : 502
+      sendError(
+        response,
+        statusCode,
+        statusCode === 404
+          ? "This Android file is no longer available in the release."
+          : "The release file server could not verify this download.",
+      )
+      return
+    }
+
+    const metadata = await metadataResponse.json()
+    if (typeof metadata.name !== "string" || !/\.apk$/i.test(metadata.name)) {
+      sendError(response, 400, "Only Android APK files can be downloaded here.")
+      return
+    }
+
+    upstream = await fetch(upstreamUrl, {
+      headers: { ...headers, Accept: "application/octet-stream" },
+      redirect: "follow",
+    })
   } catch (error) {
     console.error("Release download request failed:", error)
     sendError(response, 502, "The release file server could not be reached.")

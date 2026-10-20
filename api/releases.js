@@ -1,4 +1,4 @@
-const REPOSITORY = "hannsderrick23-debug/CaliMind"
+const REPOSITORY = "acunetix2/Zorora"
 const GITHUB_API_VERSION = "2022-11-28"
 
 function sanitizeReleaseNotes(body) {
@@ -25,6 +25,12 @@ export default async function handler(request, response) {
     return
   }
 
+  const token = process.env.GITHUB_TOKEN
+  if (!token) {
+    sendError(response, 503, "The private release source is not configured.")
+    return
+  }
+
   let upstream
   try {
     upstream = await fetch(
@@ -32,6 +38,7 @@ export default async function handler(request, response) {
       {
         headers: {
           Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
           "X-GitHub-Api-Version": GITHUB_API_VERSION,
         },
         cache: "no-store",
@@ -75,6 +82,7 @@ export default async function handler(request, response) {
       typeof release.id === "number" &&
       typeof release.tag_name === "string" &&
       typeof release.prerelease === "boolean" &&
+      !release.draft &&
       Array.isArray(release.assets),
     )
     .map((release) => ({
@@ -90,7 +98,8 @@ export default async function handler(request, response) {
           asset &&
           typeof asset.id === "number" &&
           typeof asset.name === "string" &&
-          typeof asset.size === "number",
+          typeof asset.size === "number" &&
+          /\.apk$/i.test(asset.name),
         )
         .map((asset) => ({
           id: asset.id,
@@ -100,6 +109,7 @@ export default async function handler(request, response) {
           download_count: typeof asset.download_count === "number" ? asset.download_count : 0,
         })),
     }))
+    .filter((release) => release.assets.length > 0)
 
   response.statusCode = 200
   response.setHeader("Content-Type", "application/json; charset=utf-8")

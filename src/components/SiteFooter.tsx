@@ -1,4 +1,4 @@
-import { ArrowUp, ExternalLink, Heart } from "lucide-react"
+import { ArrowUp, ExternalLink } from "lucide-react"
 import type { MouseEvent } from "react"
 
 import {
@@ -12,8 +12,6 @@ export function SiteFooter({
 }: {
   onNavigate: (path: string) => void
 }) {
-  const year = new Date().getFullYear()
-
   function navigateLink(event: MouseEvent<HTMLAnchorElement>, path: string) {
     if (
       event.defaultPrevented ||
@@ -32,11 +30,11 @@ export function SiteFooter({
       <div className="footer-main">
         <div className="footer-about">
           <a className="footer-brand" href="/" onClick={(event) => navigateLink(event, "/")}>
-            <img src="/calimind_logo.svg" alt="" />
-            <span>CaliMind</span>
+            <img src="/zorora-logo.svg" alt="" />
+            <span>Zorora</span>
           </a>
-          <p>Make space for what matters.</p>
-          <a className="footer-company-link" href="https://aventorgo.vercel.app/" target="_blank" rel="noreferrer">
+          <p>Safer journeys, with care at every step.</p>
+          <a className="footer-company-link" href="https://www.aventorgo.xyz" target="_blank" rel="noreferrer">
             Developed by Aventorgo LLC <ExternalLink size={12} />
           </a>
           <span className="footer-ceo">Led by CEO Iddy K. Chesire</span>
@@ -51,7 +49,7 @@ export function SiteFooter({
                 <NavigationMenuLink href="/" onClick={(event) => navigateLink(event, "/")}>Downloads</NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink href="/about" onClick={(event) => navigateLink(event, "/about")}>About CaliMind</NavigationMenuLink>
+                <NavigationMenuLink href="/about" onClick={(event) => navigateLink(event, "/about")}>About Zorora</NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink href="/help" onClick={(event) => navigateLink(event, "/help")}>Help center</NavigationMenuLink>
@@ -73,13 +71,15 @@ export function SiteFooter({
             onNavigate("/")
             window.setTimeout(() => document.getElementById("report-issue")?.scrollIntoView({ behavior: "smooth" }), 0)
           }}>Report an issue</a>
-          <a href="https://aventorgo.vercel.app/" target="_blank" rel="noreferrer">Contact the developer</a>
+          <a href="https://www.aventorgo.xyz" target="_blank" rel="noreferrer">Contact the developer</a>
         </div>
 
       </div>
       <div className="footer-bottom">
-        <span>© {year} <a href="https://aventorgo.vercel.app/" target="_blank" rel="noreferrer">Aventorgo LLC</a>. All rights reserved.</span>
-        <span>Made with <Heart size={13} /> and a little more room to think.</span>
+        <span className="footer-disclaimer">
+          Android is a trademark of Google LLC. Zorora and Aventorgo LLC are not
+          affiliated with or endorsed by Google LLC.
+        </span>
         <a href="#top" onClick={(event) => {
           event.preventDefault()
           window.scrollTo({ top: 0, behavior: "smooth" })

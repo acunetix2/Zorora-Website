@@ -6,15 +6,14 @@ import {
   CalendarDays,
   Check,
   CircleHelp,
-  FileArchive,
+  Download,
   Heart,
-  Laptop,
   ListFilter,
+  MapPin,
+  PackageCheck,
   RefreshCw,
   Search,
   ShieldCheck,
-  Smartphone,
-  Sparkles,
   Timer,
 } from "lucide-react"
 
@@ -72,19 +71,11 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@/components/ui/progress"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { Toggle } from "@/components/ui/toggle"
 import {
-  assetMatchesPlatform,
+  isAndroidApk,
   PAGE_SIZE,
-  platformLabel,
   sanitizeReleaseNotes,
   shortReleaseCode,
 } from "@/lib/releases"
@@ -92,7 +83,6 @@ import type {
   DownloadJob,
   DownloadOption,
   GithubRelease,
-  Platform,
   ReleaseState,
 } from "@/lib/releases"
 
@@ -124,7 +114,6 @@ export function HomePage({
   onNavigate: (path: string) => void
 }) {
   const [query, setQuery] = useState("")
-  const [platform, setPlatform] = useState<Platform>("all")
   const [includePrereleases, setIncludePrereleases] = useState(false)
   const [releaseCode, setReleaseCode] = useState("")
   const [page, setPage] = useState(1)
@@ -135,11 +124,7 @@ export function HomePage({
     const normalizedCode = releaseCode.replace(/\D/g, "")
     return releases.filter((release) => {
       if (!includePrereleases && release.prerelease) return false
-      if (
-        platform !== "all" &&
-        platform !== "source" &&
-        !release.assets.some((asset) => assetMatchesPlatform(asset, platform))
-      ) return false
+      if (!release.assets.some(isAndroidApk)) return false
       const searchable = [
         release.tag_name,
         release.name ?? "",
@@ -149,7 +134,7 @@ export function HomePage({
       return (!normalizedQuery || searchable.includes(normalizedQuery)) &&
         (!normalizedCode || shortReleaseCode(release).includes(normalizedCode))
     })
-  }, [includePrereleases, platform, query, releaseCode, releases])
+  }, [includePrereleases, query, releaseCode, releases])
 
   const pageCount = Math.max(1, Math.ceil(filteredReleases.length / PAGE_SIZE))
   const visiblePage = Math.min(page, pageCount)
@@ -157,7 +142,9 @@ export function HomePage({
     (visiblePage - 1) * PAGE_SIZE,
     visiblePage * PAGE_SIZE,
   )
-  const latestRelease = releases.find((release) => !release.prerelease)
+  const latestRelease = releases.find((release) =>
+    !release.prerelease && release.assets.some(isAndroidApk),
+  )
   const loadingProgress = releaseState === "loading" ? 35 : releaseState === "ready" ? 100 : 0
   const lastCheckedLabel = lastCheckedAt
     ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(lastCheckedAt)
@@ -180,12 +167,12 @@ export function HomePage({
         <div className="hero-copy">
           <Badge variant="outline" className="eyebrow">
             <span className="live-dot" />
-            Official release center
+            Official Zorora releases
           </Badge>
-          <h1>A little more<br /><span>room to think.</span></h1>
+          <h1>Safer journeys.<br /><span>More peace of mind.</span></h1>
           <p className="hero-description">
-            Get the latest CaliMind release for your device. Thoughtful
-            planning, calmer days, and all your tasks in one place.
+            Download the Zorora app to book trusted transport and care, manage
+            dependent journeys, and stay informed from pickup to arrival.
           </p>
           <div className="hero-actions">
             <Button
@@ -193,18 +180,18 @@ export function HomePage({
               onClick={() => document.getElementById("releases")?.scrollIntoView({ behavior: "smooth" })}
               size="lg"
             >
-              Explore downloads <ArrowRight data-icon="inline-end" />
+              Get the Android app <ArrowRight data-icon="inline-end" />
             </Button>
             <Popover>
               <PopoverTrigger className="trust-trigger" render={<Button variant="ghost" size="lg" />}>
-                <ShieldCheck /> Safe, official builds
+                <ShieldCheck /> Official Zorora builds
               </PopoverTrigger>
               <PopoverContent className="trust-popover">
                 <PopoverHeader>
                   <PopoverTitle>Download with confidence</PopoverTitle>
                   <PopoverDescription>
-                    Release information comes from the official CaliMind
-                    project. Files are downloaded through this page with visible progress.
+                    Release information comes from Zorora’s private GitHub
+                    releases. Files are downloaded through this page with visible progress.
                   </PopoverDescription>
                 </PopoverHeader>
                 <button type="button" onClick={() => onNavigate("/help")}>
@@ -214,31 +201,31 @@ export function HomePage({
             </Popover>
           </div>
           <div className="hero-trust">
-            <span><Check size={14} /> Official releases</span>
-            <span><Check size={14} /> Free to download</span>
-            <span><Check size={14} /> Thoughtful by design</span>
+            <span><Check size={14} /> Official Android builds</span>
+            <span><Check size={14} /> Secure journey tools</span>
+            <span><Check size={14} /> Built around care</span>
           </div>
         </div>
 
-        <div className="hero-art" aria-label="CaliMind release preview">
+        <div className="hero-art" aria-label="Zorora app preview">
           <div className="orb orb-back" />
           <div className="orb orb-front" />
           <div className="hero-screenshot-frame">
             <img
               className="hero-screenshot"
               src="/images/home.jpeg"
-              alt="CaliMind tasks and calendar dashboard"
+              alt="Zorora mobile app home screen"
               loading="eager"
             />
-            <span className="hero-screenshot-label"><Check size={12} /> A clearer view of today</span>
+            <span className="hero-screenshot-label"><Check size={12} /> Care for every journey</span>
           </div>
           <Card className="preview-card glass-card">
             <CardHeader>
               <div className="preview-brand">
-                <img src="/calimind_logo.svg" alt="" />
+                <img src="/zorora-logo.svg" alt="" />
                 <div>
-                  <CardTitle>CaliMind</CardTitle>
-                  <CardDescription>Daily planner · made for focus</CardDescription>
+                  <CardTitle>Zorora</CardTitle>
+                  <CardDescription>Trusted journeys · built around care</CardDescription>
                 </div>
               </div>
               <CardAction>
@@ -248,21 +235,21 @@ export function HomePage({
               </CardAction>
             </CardHeader>
             <CardContent>
-              <div className="preview-label"><Sparkles size={14} /> A calmer kind of productive</div>
+              <div className="preview-label"><ShieldCheck size={14} /> Peace of mind, built in</div>
               <div className="preview-task">
                 <span className="task-check"><Check size={13} /></span>
-                <span>Make space for what matters</span>
-                <span className="task-time">25 min</span>
+                <span>Journey updates, in one place</span>
+                <span className="task-time">Live</span>
               </div>
               <div className="preview-task muted-task">
                 <span className="task-circle" />
-                <span>Plan the week ahead</span>
-                <span className="task-time">Today</span>
+                <span>Trusted handovers</span>
+                <span className="task-time">Care</span>
               </div>
             </CardContent>
             <CardFooter className="preview-footer">
-              <div className="mini-avatars" aria-hidden="true"><span>C</span><span>M</span><span>+</span></div>
-              <span>Make today feel manageable.</span>
+              <div className="mini-avatars" aria-hidden="true"><span>Z</span><span>+</span><span>✓</span></div>
+              <span>Safer journeys, from start to finish.</span>
             </CardFooter>
           </Card>
           <div className="floating-chip chip-top">
@@ -270,16 +257,16 @@ export function HomePage({
             <span><strong>Download here</strong><small>Progress shown as you go</small></span>
           </div>
           <div className="floating-chip chip-bottom">
-            <span className="chip-sparkle"><Sparkles size={16} /></span>
-            <span><strong>One clear next step</strong><small>Your day, in focus</small></span>
+            <span className="chip-location"><MapPin size={16} /></span>
+            <span><strong>Know where they are</strong><small>Journey updates as they happen</small></span>
           </div>
           <div className="floating-chip chip-focus">
             <span className="chip-focus-icon"><Timer size={15} /></span>
-            <span><strong>Focus, one thing at a time</strong><small>Build a little momentum</small></span>
+            <span><strong>Trusted handovers</strong><small>Care at every arrival</small></span>
           </div>
           <div className="floating-chip chip-plan">
             <span className="chip-plan-icon"><CalendarDays size={15} /></span>
-            <span><strong>A plan that can flex</strong><small>Adjust as your day changes</small></span>
+            <span><strong>Care that connects</strong><small>Families, providers, and drivers</small></span>
           </div>
           <div className="hero-orbit orbit-one" />
           <div className="hero-orbit orbit-two" />
@@ -290,10 +277,10 @@ export function HomePage({
         <div className="section-heading">
           <div>
             <Badge variant="outline" className="eyebrow section-eyebrow">
-              <ArrowDownToLine size={13} /> The release library
+              <ArrowDownToLine size={13} /> Zorora for Android
             </Badge>
-            <h2>Find your next update.</h2>
-            <p>Choose a release, pick your platform, and download without leaving this page.</p>
+            <h2>Bring trusted care along.</h2>
+            <p>Choose an official Android release and download it securely through this page.</p>
           </div>
           <div className="release-count">
             <div className="release-count-total">
@@ -322,7 +309,7 @@ export function HomePage({
             className="latest-release-strip"
             onClick={() => onOpenRelease(latestRelease)}
           >
-            <span className="latest-release-icon"><Sparkles size={15} /></span>
+            <span className="latest-release-icon"><PackageCheck size={15} /></span>
             <span className="latest-release-copy">
               <strong>Latest stable release</strong>
               <span>{latestRelease.name || latestRelease.tag_name}</span>
@@ -337,8 +324,8 @@ export function HomePage({
           <div>
             <AlertTitle>Official files, downloaded here</AlertTitle>
             <AlertDescription>
-              Release information is checked against the official project. Your
-              browser stays on this portal and shows download progress.
+              Release information comes from Zorora’s private GitHub project.
+              Your browser stays on this portal and shows download progress.
             </AlertDescription>
           </div>
         </Alert>
@@ -360,23 +347,6 @@ export function HomePage({
             />
           </div>
           <div className="filter-group">
-            <div className="platform-select">
-              <Laptop size={15} />
-              <Select
-                value={platform}
-                onValueChange={(value) => resetPage(() => setPlatform(value as Platform))}
-              >
-                <SelectTrigger aria-label="Filter by platform">
-                  <SelectValue>{platformLabel(platform)}</SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all"><Laptop /> All platforms</SelectItem>
-                  <SelectItem value="android"><Smartphone /> Android</SelectItem>
-                  <SelectItem value="ios"><Smartphone /> iOS</SelectItem>
-                  <SelectItem value="source"><FileArchive /> Source archives</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
             <Label className="prerelease-filter">
               <Checkbox
                 checked={includePrereleases}
@@ -427,14 +397,14 @@ export function HomePage({
           <div className="results-label">
             <span>{filteredReleases.length} {filteredReleases.length === 1 ? "release" : "releases"}</span>
             <span className="results-divider">/</span>
-            <span>{platformLabel(platform)}</span>
+            <span>Android app releases</span>
           </div>
           <div className="sort-note"><ArrowDownUp size={14} /> Newest first</div>
         </div>
 
         {releaseState === "loading" && (
           <Card className="loading-card">
-            <CardContent><Spinner /><span>Finding the latest CaliMind releases…</span></CardContent>
+            <CardContent><Spinner /><span>Finding the latest Zorora releases…</span></CardContent>
             <Progress value={loadingProgress} className="loading-progress">
               <ProgressLabel>Connecting to official release source</ProgressLabel>
               <ProgressValue />
@@ -460,22 +430,21 @@ export function HomePage({
             <EmptyHeader>
               <EmptyMedia variant="icon"><Search /></EmptyMedia>
               <EmptyTitle>
-                {releases.length === 0 ? "No public releases yet." : "No releases match those filters."}
+                {releases.length === 0 ? "No Android releases yet." : "No Android releases match those filters."}
               </EmptyTitle>
               <EmptyDescription>
                 {releases.length === 0
-                  ? "When a release is published, its downloads will appear here."
-                  : "Try another search, platform, or release code."}
+                  ? "When an Android build is published, its download will appear here."
+                  : "Try another search or release code."}
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              {(query || releaseCode || platform !== "all" || includePrereleases) && (
+              {(query || releaseCode || includePrereleases) && (
                 <Button
                   variant="outline"
                   onClick={() => {
                     setQuery("")
                     setReleaseCode("")
-                    setPlatform("all")
                     setIncludePrereleases(false)
                     setPage(1)
                   }}
@@ -496,7 +465,6 @@ export function HomePage({
                   key={release.id}
                   release={release}
                   index={(visiblePage - 1) * PAGE_SIZE + index}
-                  platform={platform}
                   compact={compactView}
                   onCopy={onCopy}
                   onDownload={onDownload}
@@ -538,26 +506,26 @@ export function HomePage({
 
       <section className="help-section" id="about">
         <div className="help-copy">
-          <Badge variant="outline" className="eyebrow"><Heart size={13} /> Made for your everyday</Badge>
-          <h2>Less noise.<br /><span>More you.</span></h2>
+          <Badge variant="outline" className="eyebrow"><Heart size={13} /> Care at every step</Badge>
+          <h2>Every journey.<br /><span>More peace of mind.</span></h2>
           <p>
-            CaliMind brings your tasks, voice notes, and daily plan together so
-            you can spend less energy keeping track—and more on what matters.
+            Zorora brings guardians, drivers, and care providers together to
+            coordinate journeys and keep the people who matter connected.
           </p>
           <div className="help-links">
-            <Button onClick={() => onNavigate("/about")} variant="outline">About CaliMind <ArrowRight /></Button>
+            <Button onClick={() => onNavigate("/about")} variant="outline">About Zorora <ArrowRight /></Button>
             <Button onClick={() => onNavigate("/help")} variant="ghost">Get help <CircleHelp /></Button>
           </div>
         </div>
         <Card className="help-card glass-card">
           <CardHeader>
-            <div className="help-card-icon"><Sparkles /></div>
-            <CardTitle>New to CaliMind?</CardTitle>
-            <CardDescription>A gentle start, whenever you’re ready.</CardDescription>
+            <div className="help-card-icon"><Download /></div>
+            <CardTitle>New to Zorora?</CardTitle>
+            <CardDescription>Get the official Android app and start with care.</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="message-bubble">
-              Start with one task. We’ll help you find a little space for it.
+              Trusted journeys and care, connected in one place.
             </p>
           </CardContent>
           <CardFooter className="help-card-footer">
