@@ -4,6 +4,7 @@ import {
   BookOpen,
   Check,
   Clock3,
+  Download,
   Menu,
   PackageCheck,
   Search,
@@ -33,7 +34,9 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import {
   formatDate,
+  formatDownloadCount,
   formatSize,
+  releaseDownloadCount,
   releaseDownloads,
   sanitizeReleaseNotes,
   shortReleaseCode,
@@ -137,6 +140,12 @@ export function ReleaseCard({
           <span>{assets.length === 1 ? "file" : "files"}</span>
           {assets.length > 0 && assets.every((asset) => asset.size !== null) && (
             <span className="asset-total">{formatSize(assets.reduce((sum, asset) => sum + (asset.size ?? 0), 0))}</span>
+          )}
+          {releaseDownloadCount(release) > 0 && (
+            <span className="asset-download-count" title="Total downloads for this release">
+              <Download size={12} />
+              {formatDownloadCount(releaseDownloadCount(release))}
+            </span>
           )}
         </div>
         {installableApk ? (

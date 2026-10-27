@@ -1176,6 +1176,17 @@ main,
   color: var(--cm-muted);
 }
 
+.asset-download-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 5px;
+  padding-left: 8px;
+  border-left: 1px solid rgb(0 203 178 / 14%);
+  color: var(--cm-primary);
+  font-size: 0.67rem;
+}
+
 .asset-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2447,6 +2458,20 @@ main,
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
+}
+
+.release-count-downloads {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--cm-primary);
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+.release-count-downloads .count-number {
+  font-weight: 600;
+  color: var(--cm-primary);
 }
 
 .release-refresh-label {

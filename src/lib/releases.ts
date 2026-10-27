@@ -84,3 +84,21 @@ export function releaseDownloads(release: GithubRelease): DownloadOption[] {
 export function releasePath(release: GithubRelease) {
   return `/releases/${encodeURIComponent(release.tag_name)}`
 }
+
+/** Total download count for all APK assets in a release. */
+export function releaseDownloadCount(release: GithubRelease) {
+  return release.assets
+    .filter(isAndroidApk)
+    .reduce((sum, asset) => sum + asset.download_count, 0)
+}
+
+/** Total download count across all releases. */
+export function totalDownloadCount(releases: GithubRelease[]) {
+  return releases.reduce((sum, release) => sum + releaseDownloadCount(release), 0)
+}
+
+export function formatDownloadCount(count: number) {
+  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
+  if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
+  return String(count)
+}

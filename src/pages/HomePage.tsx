@@ -15,6 +15,7 @@ import {
   Search,
   ShieldCheck,
   Timer,
+  TrendingUp,
 } from "lucide-react"
 
 import { ReleaseCard } from "@/components/ReleaseCard"
@@ -78,6 +79,8 @@ import {
   PAGE_SIZE,
   sanitizeReleaseNotes,
   shortReleaseCode,
+  totalDownloadCount,
+  formatDownloadCount,
 } from "@/lib/releases"
 import type {
   DownloadJob,
@@ -294,6 +297,13 @@ export function HomePage({
               <span className="count-number">{releaseState === "ready" ? releases.length : "—"}</span>
               <span>available releases</span>
             </div>
+            {releaseState === "ready" && totalDownloadCount(releases) > 0 && (
+              <div className="release-count-downloads">
+                <TrendingUp size={13} />
+                <span className="count-number">{formatDownloadCount(totalDownloadCount(releases))}</span>
+                <span>total downloads</span>
+              </div>
+            )}
             <span className="release-refresh-label">
               {isRefreshing ? <><RefreshCw className="refresh-spinning" size={12} /> Checking now</> : `Checked ${lastCheckedLabel}`}
             </span>

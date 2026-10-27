@@ -25,6 +25,12 @@ pnpm-debug.log*
 .vercel/
 .netlify/
 
+# Large binary/installer files — keep out of the repo
+*.exe
+*.dmg
+*.pkg
+*.msi
+
 # Editor and operating system files
 .vscode/*
 !.vscode/extensions.json
